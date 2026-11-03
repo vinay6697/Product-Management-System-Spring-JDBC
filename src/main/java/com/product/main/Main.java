@@ -25,6 +25,7 @@ public class Main {
 			System.out.println("Enter 3 to search the product");
 			System.out.println("Enter 4 to update the productStock");
 			System.out.println("Enter 5 to checkLowStock");
+			System.out.println("Enter 6 to get all the products");
 			int choice=sc.nextInt();
 			sc.nextLine();
 			
@@ -114,6 +115,21 @@ public class Main {
 					else
 					{
 						System.out.println("Did not find any produc wiht the threshold "+threshold);
+					}
+					break;
+				}
+				case 6:
+				{
+					List<Product> products=dao.getAllProduct();
+					if(products!=null)
+					{
+						for(Product product:products) {
+							System.out.println(product);
+						}
+					}
+					else
+					{
+						System.out.println("no products available");
 					}
 					break;
 				}

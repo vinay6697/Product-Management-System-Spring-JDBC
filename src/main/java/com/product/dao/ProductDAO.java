@@ -102,4 +102,39 @@ public class ProductDAO {
 		},threshold);
 	}
 
+	public List<Product> getAllProduct()
+	{
+		String selectQuery="SELECT * FROM PRODUCT";
+		return jdbcTemplate.query(selectQuery, new RowMapper<Product>() {
+			
+			public Product mapRow(ResultSet rs,int rowNum) throws SQLException {
+				Product product=new Product();
+				product.setProductId(rs.getInt("product_id"));
+				product.setProductName(rs.getString("product_name"));
+		        product.setCategory(rs.getString("category"));
+		        product.setPrice(rs.getBigDecimal("price"));
+		        product.setQuantity(rs.getInt("quantity"));
+		        product.setDescription(rs.getString("description"));
+		        
+		        return product;
+			}
+		});
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
