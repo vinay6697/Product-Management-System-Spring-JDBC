@@ -24,6 +24,7 @@ public class Main {
 			System.out.println("Enter 2 to delete the product");
 			System.out.println("Enter 3 to search the product");
 			System.out.println("Enter 4 to update the productStock");
+			System.out.println("Enter 5 to checkLowStock");
 			int choice=sc.nextInt();
 			sc.nextLine();
 			
@@ -96,6 +97,24 @@ public class Main {
 						System.out.println("Product not found or insufficient stock");
 					sc.nextLine();
 					
+					break;
+				}
+				case 5:
+				{
+					System.out.println("Enter the Threshold");
+					int threshold=sc.nextInt();
+					sc.nextLine();
+					List<Product> products=dao.checkLowStock(threshold);
+					if(products!=null)
+					{
+						for(Product product:products) {
+							System.out.println(product);
+						}
+					}
+					else
+					{
+						System.out.println("Did not find any produc wiht the threshold "+threshold);
+					}
 					break;
 				}
 				default:

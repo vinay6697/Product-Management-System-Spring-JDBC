@@ -78,5 +78,28 @@ public class ProductDAO {
 		String updateQuery="UPDATE PRODUCT SET quantity = quantity - ? WHERE product_id = ? AND quantity >= ?";
 		return jdbcTemplate.update(updateQuery,quantity,productId,quantity);
 	}
+	
+	public List<Product> checkLowStock(int threshold)
+	{
+		String selectQuery="SELECT * FROM PRODUCT WHERE QUANTITY<=?";
+		return jdbcTemplate.query(selectQuery, new RowMapper<Product>() {
+
+		    @Override
+		    public Product mapRow(ResultSet rs, int rowNum)
+		            throws SQLException {
+
+		        Product product = new Product();
+
+		        product.setProductId(rs.getInt("product_id"));
+		        product.setProductName(rs.getString("product_name"));
+		        product.setCategory(rs.getString("category"));
+		        product.setPrice(rs.getBigDecimal("price"));
+		        product.setQuantity(rs.getInt("quantity"));
+		        product.setDescription(rs.getString("description"));
+
+		        return product;
+		    }
+		},threshold);
+	}
 
 }
