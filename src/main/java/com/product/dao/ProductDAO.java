@@ -1,8 +1,13 @@
 package com.product.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.product.entity.Product;
@@ -30,6 +35,36 @@ public class ProductDAO {
 
             return ps;
         });
+	}
+	
+	public int deleteProduct(int id)
+	{
+		String deleteQuery="DELETE FROM PRODUCT WHERE PRODUCT_ID=?";
+		return jdbcTemplate.update(deleteQuery,id);
+	}
+	
+	public List<Product> searchProductByICategory(String category)
+	{
+		String searchQuery="SELECT * FROM PRODUCT WHERE CATEGORY=?";
+		
+		return jdbcTemplate.query(searchQuery, new RowMapper<Product>() {
+
+		    @Override
+		    public Product mapRow(ResultSet rs, int rowNum)
+		            throws SQLException {
+
+		        Product product = new Product();
+
+		        product.setProductId(rs.getInt("product_id"));
+		        product.setProductName(rs.getString("product_name"));
+		        product.setCategory(rs.getString("category"));
+		        product.setPrice(rs.getBigDecimal("price"));
+		        product.setQuantity(rs.getInt("quantity"));
+		        product.setDescription(rs.getString("description"));
+
+		        return product;
+		    }
+		}, category);
 	}
 
 }

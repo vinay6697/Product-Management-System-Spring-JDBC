@@ -79,5 +79,4 @@ public class Product {
 				+ ", price=" + price + ", quantity=" + quantity + ", description=" + description + "]";
 	}
 	
-	
 }

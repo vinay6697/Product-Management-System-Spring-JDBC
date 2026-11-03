@@ -1,6 +1,7 @@
 package com.product.main;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -17,13 +18,12 @@ public class Main {
 		Scanner sc=new Scanner(System.in);
 		String str="";
 		
-		
 		do {
 			System.out.println("Enter the choice");
 			System.out.println("Enter 1 to add the product");
-			System.out.println("Enter 2 to update the product");
-			System.out.println("Enter 3 to delete the product");
-			System.out.println("Enter 4 to find the product");
+			System.out.println("Enter 2 to delete the product");
+			System.out.println("Enter 3 to search the product");
+			System.out.println("Enter 4 to update the product");
 			int choice=sc.nextInt();
 			sc.nextLine();
 			
@@ -60,10 +60,31 @@ public class Main {
 				}
 				case 2:
 				{
+					System.out.println("Enter the id");
+					int id=sc.nextInt();
+					int result=dao.deleteProduct(id);
+					if(result>0)
+						System.out.println("Product deleted successfully");
+					else
+						System.out.println("Product not found");
 					break;
+
 				}
 				case 3:
 				{
+					System.out.println("Enter the category");
+					String category=sc.nextLine();
+					List<Product> categories=dao.searchProductByICategory(category);
+					if(categories!=null)
+					{
+						for(Product product:categories)
+						{
+							System.out.println(product);
+						}
+					}
+					else
+						System.out.println("Category not found");
+					
 					break;
 				}
 				default:
@@ -79,5 +100,6 @@ public class Main {
 		sc.close();
 		
 		context.close();
+		System.out.println("application closed succesfully");
 	}
 }
