@@ -120,6 +120,47 @@ public class ProductDAO {
 			}
 		});
 	}
+	
+	public Product getProductById(int id)
+	{
+		String selectQuery="SELECT * FROM PRODUCT WHERE PRODUCT_ID=?";
+		List<Product> products =jdbcTemplate.query(selectQuery,new RowMapper<Product>() {
+
+			@Override
+			public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Product product=new Product();
+				product.setProductId(rs.getInt("product_id"));
+				product.setProductName(rs.getString("product_name"));
+		        product.setCategory(rs.getString("category"));
+		        product.setPrice(rs.getBigDecimal("price"));
+		        product.setQuantity(rs.getInt("quantity"));
+		        product.setDescription(rs.getString("description"));
+		        
+				return product;
+			}
+			},id);
+		if (products.isEmpty()) {
+		    return null;
+		}
+
+		return products.get(0);
+	}
+	
+	public int updateProduct(Product product)
+	{
+		    String query = "UPDATE product SET product_name = ?, "
+		                 + "category = ?, price = ?, description = ? "
+		                 + "WHERE product_id = ?";
+
+		    return jdbcTemplate.update(
+		        query,
+		        product.getProductName(),
+		        product.getCategory(),
+		        product.getPrice(),
+		        product.getDescription(),
+		        product.getProductId()
+		    );
+	}
 }
 
 

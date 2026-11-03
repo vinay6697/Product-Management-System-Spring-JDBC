@@ -26,6 +26,8 @@ public class Main {
 			System.out.println("Enter 4 to update the productStock");
 			System.out.println("Enter 5 to checkLowStock");
 			System.out.println("Enter 6 to get all the products");
+			System.out.println("Enter 7 to get the product by id");
+			System.out.println("Enter 8 to update the product details");
 			int choice=sc.nextInt();
 			sc.nextLine();
 			
@@ -64,6 +66,7 @@ public class Main {
 				{
 					System.out.println("Enter the id");
 					int id=sc.nextInt();
+					sc.nextLine();
 					int result=dao.deleteProduct(id);
 					if(result>0)
 						System.out.println("Product deleted successfully");
@@ -133,6 +136,24 @@ public class Main {
 					}
 					break;
 				}
+				case 7:
+				{
+					System.out.println("Enter the product id");
+					int id=sc.nextInt();
+					sc.nextLine();
+					Product product=dao.getProductById(id);
+					System.out.println(product);
+					break;
+				}
+				case 8:
+				{
+					int result=updateProduct(dao,sc);
+					if(result>0)
+						System.out.println("product details updated successfully");
+					else
+						System.out.println("product not found");
+					break;
+				}
 				default:
 				{
 					System.out.println("invalid choice");
@@ -182,4 +203,36 @@ public class Main {
 		}//end of inner switch
 		return result;
 	}
+	
+	public static int updateProduct(ProductDAO dao,Scanner sc)
+	{
+		System.out.println("Enter the product id");
+		int id=sc.nextInt();
+		sc.nextLine();
+		
+		System.out.println("Enter the Product name");
+		String name=sc.nextLine();
+		
+		System.out.println("Enter the Product category");
+		String category=sc.nextLine();
+		
+		System.out.println("Enter the product new Price");
+		BigDecimal price=new BigDecimal(sc.nextDouble());
+		sc.nextLine();
+		
+		System.out.println("Enter the Product Description");
+		String description =sc.nextLine();
+		
+		Product product=new Product();
+		product.setProductId(id);
+		product.setProductName(name);
+		product.setCategory(category);
+		product.setPrice(price);
+		product.setDescription(description);
+		
+		int result=dao.updateProduct(product);
+		return result;
+	}
 }
+
+
