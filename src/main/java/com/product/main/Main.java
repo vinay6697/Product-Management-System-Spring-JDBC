@@ -23,7 +23,7 @@ public class Main {
 			System.out.println("Enter 1 to add the product");
 			System.out.println("Enter 2 to delete the product");
 			System.out.println("Enter 3 to search the product");
-			System.out.println("Enter 4 to update the product");
+			System.out.println("Enter 4 to update the productStock");
 			int choice=sc.nextInt();
 			sc.nextLine();
 			
@@ -87,6 +87,17 @@ public class Main {
 					
 					break;
 				}
+				case 4:
+				{
+					int result=manageStock(dao,sc);
+					if(result>0)
+						System.out.println("product stock update succesfully");
+					else
+						System.out.println("Product not found or insufficient stock");
+					sc.nextLine();
+					
+					break;
+				}
 				default:
 				{
 					System.out.println("invalid choice");
@@ -101,5 +112,39 @@ public class Main {
 		
 		context.close();
 		System.out.println("application closed succesfully");
+	}
+	
+	public static int manageStock(ProductDAO dao,Scanner sc)
+	{
+		System.out.println("Enter the product id");
+		int id=sc.nextInt();
+		System.out.println("Enter 1 to update stock");
+		System.out.println("Enter 2 to reduce stock");
+		int productChoice=sc.nextInt();
+		int result=0;
+		switch(productChoice)
+		{
+			case 1:
+			{
+				System.out.println("Enter the quantity");
+				int quantity=sc.nextInt();
+				
+				result=dao.addStock(id, quantity);
+				break;
+			}
+			case 2:
+			{
+				System.out.println("Enter the quantity");
+				int quantity=sc.nextInt();
+				result=dao.reduceStock(id, quantity);
+				break;
+			}
+			default :
+			{
+				System.out.println("invalid choice");
+				break;
+			}
+		}//end of inner switch
+		return result;
 	}
 }

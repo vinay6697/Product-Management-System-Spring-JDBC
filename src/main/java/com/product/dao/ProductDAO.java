@@ -66,5 +66,17 @@ public class ProductDAO {
 		    }
 		}, category);
 	}
+	
+	public int addStock(int productId,int quantity)
+	{
+		String updateQuery="UPDATE PRODUCT SET quantity = quantity + ? WHERE product_id = ?";
+		return jdbcTemplate.update(updateQuery,quantity,productId);
+	}
+	
+	public int reduceStock(int productId,int quantity)
+	{
+		String updateQuery="UPDATE PRODUCT SET quantity = quantity - ? WHERE product_id = ? AND quantity >= ?";
+		return jdbcTemplate.update(updateQuery,quantity,productId,quantity);
+	}
 
 }
