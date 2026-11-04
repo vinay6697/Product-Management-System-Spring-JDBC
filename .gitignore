@@ -1,0 +1,17 @@
+# Database credentials
+src/main/resources/database.properties
+
+# Maven generated files
+target/
+
+# Eclipse generated files
+.classpath
+.project
+.settings/
+
+# Log files
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db

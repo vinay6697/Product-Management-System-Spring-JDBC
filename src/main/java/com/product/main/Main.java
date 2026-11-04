@@ -5,15 +5,16 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.DataAccessException;
 
 import com.product.config.MyConfig;
 import com.product.entity.Product;
-import com.product.service.Service;
+import com.product.service.ServiceDAO;
 
 public class Main {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(MyConfig.class);
-		Service service=context.getBean("service",Service.class);
+		ServiceDAO service=context.getBean("serviceDAO",ServiceDAO.class);
 		Scanner sc=new Scanner(System.in);
 		String str="";
 		
@@ -27,12 +28,11 @@ public class Main {
 			System.out.println("Enter 6 to get all the products");
 			System.out.println("Enter 7 to get the product by id");
 			System.out.println("Enter 8 to update the product details");
-			int choice=sc.nextInt();
-			sc.nextLine();
+			String input=sc.nextLine();
 
 			try
 			{
-				
+				int choice=Integer.parseInt(input);
 				switch(choice)
 				{
 					case 1:
@@ -43,13 +43,27 @@ public class Main {
 						System.out.println("Enter the product category");
 						String category=sc.nextLine();
 						
-						System.out.println("Enter the price");
-						double d=sc.nextDouble();
-						BigDecimal price=new BigDecimal(d);
+						BigDecimal price;
+
+						try {
+						    System.out.println("Enter the price");
+						    price = new BigDecimal(sc.nextLine());
+
+						} catch (NumberFormatException e) {
+						    System.out.println("Please enter a valid price");
+						    continue;
+						}
 						
-						System.out.println("Enter the quantity");
-						int quantity=sc.nextInt();
-						sc.nextLine();
+						int quantity;
+
+						try {
+						    System.out.println("Enter the quantity");
+						    quantity = Integer.parseInt(sc.nextLine());
+
+						} catch (NumberFormatException e) {
+						    System.out.println("Please enter a valid quantity");
+						    continue;
+						}
 						
 						System.out.println("Enter the description");
 						String description=sc.nextLine();
@@ -69,8 +83,7 @@ public class Main {
 					case 2:
 					{
 						System.out.println("Enter the id");
-						int id=sc.nextInt();
-						sc.nextLine();
+						int id=Integer.parseInt(sc.nextLine());
 						int result=service.deleteProduct(id);
 						if(result>0)
 							System.out.println("Product deleted successfully");
@@ -103,17 +116,15 @@ public class Main {
 							System.out.println("product stock update succesfully");
 						else
 							System.out.println("Product not found or insufficient stock");
-						sc.nextLine();
 						
 						break;
 					}
 					case 5:
 					{
 						System.out.println("Enter the Threshold");
-						int threshold=sc.nextInt();
-						sc.nextLine();
+						int threshold=Integer.parseInt(sc.nextLine());
 						List<Product> products=service.checkLowStock(threshold);
-						if(products!=null)
+						if(products!=null && !products.isEmpty())
 						{
 							for(Product product:products) {
 								System.out.println(product);
@@ -128,23 +139,20 @@ public class Main {
 					case 6:
 					{
 						List<Product> products=service.getAllProduct();
-						if(products!=null)
+						if(products!=null && !products.isEmpty())
 						{
 							for(Product product:products) {
 								System.out.println(product);
 							}
 						}
 						else
-						{
 							System.out.println("no products available");
-						}
 						break;
 					}
 					case 7:
 					{
 						System.out.println("Enter the product id");
-						int id=sc.nextInt();
-						sc.nextLine();
+						int id=Integer.parseInt(sc.nextLine());
 						Product product=service.getProductById(id);
 						if(product!=null)
 							System.out.println(product);
@@ -169,6 +177,9 @@ public class Main {
 				}//end of switch
 			} catch (IllegalArgumentException e) {
 			    System.out.println("Validation Error: " + e.getMessage());
+			}
+			catch (DataAccessException e) {
+			    System.out.println("Database Error: " + e.getMessage());
 			}//end of try catchBlock
 			
 			System.out.println("Enter Y for YES or N for no");
@@ -181,29 +192,43 @@ public class Main {
 		System.out.println("application closed succesfully");
 	}
 	
-	public static int manageStock(Service service,Scanner sc)
+	public static int manageStock(ServiceDAO service,Scanner sc)
 	{
 		System.out.println("Enter the product id");
-		int id=sc.nextInt();
+		int id=Integer.parseInt(sc.nextLine());
 		System.out.println("Enter 1 to update stock");
 		System.out.println("Enter 2 to reduce stock");
-		int productChoice=sc.nextInt();
+		int productChoice=Integer.parseInt(sc.nextLine());
 		int result=0;
 		switch(productChoice)
 		{
 			case 1:
 			{
-				System.out.println("Enter the quantity");
-				int quantity=sc.nextInt();
-				
-				result=service.addStock(id, quantity);
+				int quantity;
+
+				try {
+				    System.out.println("Enter the quantity");
+				    quantity = Integer.parseInt(sc.nextLine());
+				    result=service.addStock(id, quantity);
+
+				} catch (NumberFormatException e) {
+				    System.out.println("Please enter a valid quantity");
+				    return 0;
+				}
 				break;
 			}
 			case 2:
 			{
-				System.out.println("Enter the quantity");
-				int quantity=sc.nextInt();
-				result=service.reduceStock(id, quantity);
+				int quantity;
+
+			try {
+			    System.out.println("Enter the quantity");
+			    quantity = Integer.parseInt(sc.nextLine());
+			    result=service.reduceStock(id, quantity);
+			    
+			} catch (NumberFormatException e) {
+			    System.out.println("Please enter a valid quantity");
+			}
 				break;
 			}
 			default :
@@ -215,11 +240,10 @@ public class Main {
 		return result;
 	}
 	
-	public static int updateProduct(Service service,Scanner sc)
+	public static int updateProduct(ServiceDAO service,Scanner sc)
 	{
 		System.out.println("Enter the product id");
-		int id=sc.nextInt();
-		sc.nextLine();
+		int id=Integer.parseInt(sc.nextLine());
 		
 		System.out.println("Enter the Product name");
 		String name=sc.nextLine();
@@ -228,9 +252,16 @@ public class Main {
 		String category=sc.nextLine();
 		
 		System.out.println("Enter the product new Price");
-		BigDecimal price=new BigDecimal(sc.nextDouble());
-		sc.nextLine();
-		
+		BigDecimal price;
+
+		while (true) {
+		    try {
+		        price = new BigDecimal(sc.nextLine());
+		        break;
+		    } catch (NumberFormatException e) {
+		        System.out.println("Please enter a valid price");
+		    }
+		}
 		System.out.println("Enter the Product Description");
 		String description =sc.nextLine();
 		

@@ -1,20 +1,19 @@
 package com.product.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.product.dao.ProductDAO;
 import com.product.entity.Product;
 
-@Component
-public class Service {
+@Service
+public class ServiceDAO {
 	
 	 private final ProductDAO dao;
 
-	    public Service(ProductDAO dao) {
+	    public ServiceDAO(ProductDAO dao) {
 	        this.dao = dao;
 	    }
 	
@@ -68,9 +67,7 @@ public class Service {
 		        || category.equalsIgnoreCase("null")) {
 			throw  new IllegalArgumentException("Please enter a valid category");
 		}
-		
 		return dao.searchProductByICategory(category);
-		
 	}
 	
 	public int addStock(int id,int quantity)
@@ -85,22 +82,18 @@ public class Service {
 	
 	public int reduceStock(int id,int quantity)
 	{
-		int result=0;
 		if(id<=0 || quantity<=0)
 			throw  new IllegalArgumentException("Product ID and quantity must be greater than zero");
-		else
-			result=dao.reduceStock(id,quantity);
-		return result;
+			return dao.reduceStock(id,quantity);
 	}
 	
 	public List<Product> checkLowStock(int threshold)
 	{
-		List<Product> products=new ArrayList<>();
 		if(threshold<=0)
 			throw  new IllegalArgumentException("Threshold must be greater than zero");
-		else
-			products=dao.checkLowStock(threshold);
-		return products;
+	
+		return dao.checkLowStock(threshold);
+		
 	}
 	
 	public List<Product> getAllProduct()
@@ -110,13 +103,10 @@ public class Service {
 	
 	public Product getProductById(int id)
 	{
-		Product product=null;
-		
 		if(id<=0)
 			throw  new IllegalArgumentException("Product ID must be greater than zero");
-		else
-			product=dao.getProductById(id);
-		return product;
+
+		return dao.getProductById(id);
 	}
 	
 	public int updateProduct(Product product)
