@@ -7,14 +7,12 @@ import java.util.Scanner;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.product.config.MyConfig;
-import com.product.dao.ProductDAO;
 import com.product.entity.Product;
 import com.product.service.Service;
 
 public class Main {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(MyConfig.class);
-		ProductDAO dao = context.getBean("productDAO", ProductDAO.class);
 		Service service=context.getBean("service",Service.class);
 		Scanner sc=new Scanner(System.in);
 		String str="";

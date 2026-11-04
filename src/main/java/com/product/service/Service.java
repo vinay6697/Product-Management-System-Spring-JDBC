@@ -24,18 +24,29 @@ public class Service {
 		
 		if(product==null)
 			 System.out.println("Product cannot be null");
-	    else if(product.getProductName().isBlank())
-			System.out.println("Product name cannot be empty");
-		else if(product.getCategory().isBlank())
-			System.out.println("product category cannot be empty");
+		else if (product.getProductName() == null || product.getProductName().isBlank() 
+				|| product.getProductName().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid product name");
+		}
+		
+		else if (product.getCategory() == null || product.getCategory().isBlank() 
+				|| product.getCategory().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid category name");
+		}
+		
 		else if(product.getPrice()==null)
 			System.out.println("Price must be greater than zero");
 		else if(product.getPrice().compareTo(BigDecimal.ZERO)<=0)
 			System.out.println("price cannot be less the 0");
+		
 		else if(product.getQuantity()<=0)
 			System.out.println("Quantity must be greater than zero");
-		else if(product.getDescription().isBlank())
-			System.out.println("product description cannot be empty");
+		
+		else if (product.getDescription()== null || product.getDescription().isBlank() 
+				|| product.getDescription().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid description name");
+		}
+		
 		else
 			result = dao.addProduct(product);
 		
@@ -46,7 +57,7 @@ public class Service {
 	{
 		if(id<=0)
 		{
-			System.out.println("Id's cannot be negative or less than 0");
+			System.out.println("Product ID must be greater than zero");
 			return 0;
 		}
 		else
@@ -57,8 +68,10 @@ public class Service {
 	{
 		List<Product> products=new ArrayList<>();
 		
-		if(category.isBlank())
-			System.out.println("please enter the product category it cannot be empty");
+		if (category == null || category.isBlank()
+		        || category.equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid category");
+		}
 		else
 		products= dao.searchProductByICategory(category);
 		
@@ -115,14 +128,31 @@ public class Service {
 	{
 		int result=0;
 		
-		if(product.getProductId()<=0)
+		if(product==null)
+			System.out.println("product cannot be null");
+		else if(product.getProductId()<=0)
 			System.out.println("Product id cannot be 0 or negative");
-		else if(product.getProductName().isBlank())
-			System.out.println("Product name cannot be empty");
-		else if(product.getCategory().isBlank())
-			System.out.println("product category cannot be empty");
-		else if(product.getPrice().compareTo(BigDecimal.ZERO)<=0)
+		
+		else if(product.getProductName() == null || product.getProductName().isBlank() ||
+				product.getProductName().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid product name");
+		}
+		
+		else if(product.getCategory()== null || product.getCategory().isBlank() || 
+				product.getCategory().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid category name");
+		}
+		    
+		else if(product.getPrice()==null)
 			System.out.println("Price must be greater than zero");
+		else if(product.getPrice().compareTo(BigDecimal.ZERO)<=0)
+			System.out.println("price cannot be less the 0");
+		
+		else if (product.getDescription()== null || product.getDescription().isBlank() 
+				|| product.getDescription().equalsIgnoreCase("null")) {
+		    System.out.println("Please enter a valid descritpion name");
+		}
+		
 		else
 			result = dao.updateProduct(product);
 		
