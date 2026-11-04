@@ -29,136 +29,148 @@ public class Main {
 			System.out.println("Enter 8 to update the product details");
 			int choice=sc.nextInt();
 			sc.nextLine();
-			
-			switch(choice)
-			{
-				case 1:
-				{
-					System.out.println("Enter the product name");
-					String name=sc.nextLine();
-					
-					System.out.println("Enter the product category");
-					String category=sc.nextLine();
-					
-					System.out.println("Enter the price");
-					double d=sc.nextDouble();
-					BigDecimal price=new BigDecimal(d);
-					
-					System.out.println("Enter the quantity");
-					int quantity=sc.nextInt();
-					sc.nextLine();
-					
-					System.out.println("Enter the description");
-					String description=sc.nextLine();
-					
-					Product product=new Product(name,category,price,quantity,description);
-					
-					int result=service.addProduct(product);
-					if(result>0)
-						System.out.println("Product inserted successfully");
-					else
-						System.out.println("product failed to insert");
-					
-					break;
-				}
-				case 2:
-				{
-					System.out.println("Enter the id");
-					int id=sc.nextInt();
-					sc.nextLine();
-					int result=service.deleteProduct(id);
-					if(result>0)
-						System.out.println("Product deleted successfully");
-					else
-						System.out.println("Product not found");
-					break;
 
-				}
-				case 3:
+			try
+			{
+				
+				switch(choice)
 				{
-					System.out.println("Enter the category");
-					String category=sc.nextLine();
-					List<Product> categories=service.searchProductByCategory(category);
-					if(categories!=null)
+					case 1:
 					{
-						for(Product product:categories)
+						System.out.println("Enter the product name");
+						String name=sc.nextLine();
+						
+						System.out.println("Enter the product category");
+						String category=sc.nextLine();
+						
+						System.out.println("Enter the price");
+						double d=sc.nextDouble();
+						BigDecimal price=new BigDecimal(d);
+						
+						System.out.println("Enter the quantity");
+						int quantity=sc.nextInt();
+						sc.nextLine();
+						
+						System.out.println("Enter the description");
+						String description=sc.nextLine();
+						
+						Product product=new Product(name,category,price,quantity,description);
+						
+						    int result = service.addProduct(product);
+	
+						    if (result > 0)
+						        System.out.println("Product inserted successfully");
+						    else
+						        System.out.println("Product insertion failed");
+	
+						
+						break;
+					}
+					case 2:
+					{
+						System.out.println("Enter the id");
+						int id=sc.nextInt();
+						sc.nextLine();
+						int result=service.deleteProduct(id);
+						if(result>0)
+							System.out.println("Product deleted successfully");
+						else
+							System.out.println("Product not found");
+						break;
+	
+					}
+					case 3:
+					{
+						System.out.println("Enter the category");
+						String category=sc.nextLine();
+						List<Product> products=service.searchProductByCategory(category);
+						if(products!=null && products.size()!=0)
 						{
-							System.out.println(product);
+							for(Product product:products)
+							{
+								System.out.println(product);
+							}
 						}
+						else
+							System.out.println("product not found for category: "+category);
+						
+						break;
 					}
-					else
-						System.out.println("Category not found");
-					
-					break;
-				}
-				case 4:
-				{
-					int result=manageStock(service,sc);
-					if(result>0)
-						System.out.println("product stock update succesfully");
-					else
-						System.out.println("Product not found or insufficient stock");
-					sc.nextLine();
-					
-					break;
-				}
-				case 5:
-				{
-					System.out.println("Enter the Threshold");
-					int threshold=sc.nextInt();
-					sc.nextLine();
-					List<Product> products=service.checkLowStock(threshold);
-					if(products!=null)
+					case 4:
 					{
-						for(Product product:products) {
-							System.out.println(product);
+						int result=manageStock(service,sc);
+						if(result>0)
+							System.out.println("product stock update succesfully");
+						else
+							System.out.println("Product not found or insufficient stock");
+						sc.nextLine();
+						
+						break;
+					}
+					case 5:
+					{
+						System.out.println("Enter the Threshold");
+						int threshold=sc.nextInt();
+						sc.nextLine();
+						List<Product> products=service.checkLowStock(threshold);
+						if(products!=null)
+						{
+							for(Product product:products) {
+								System.out.println(product);
+							}
 						}
-					}
-					else
-					{
-						System.out.println("Did not find any produc wiht the threshold "+threshold);
-					}
-					break;
-				}
-				case 6:
-				{
-					List<Product> products=service.getAllProduct();
-					if(products!=null)
-					{
-						for(Product product:products) {
-							System.out.println(product);
+						else
+						{
+							System.out.println("Did not find any produc wiht the threshold "+threshold);
 						}
+						break;
 					}
-					else
+					case 6:
 					{
-						System.out.println("no products available");
+						List<Product> products=service.getAllProduct();
+						if(products!=null)
+						{
+							for(Product product:products) {
+								System.out.println(product);
+							}
+						}
+						else
+						{
+							System.out.println("no products available");
+						}
+						break;
 					}
-					break;
-				}
-				case 7:
-				{
-					System.out.println("Enter the product id");
-					int id=sc.nextInt();
-					sc.nextLine();
-					Product product=service.getProductById(id);
-					System.out.println(product);
-					break;
-				}
-				case 8:
-				{
-					int result=updateProduct(service,sc);
-					if(result>0)
-						System.out.println("product details updated successfully");
-					else
-						System.out.println("product not found");
-					break;
-				}
-				default:
-				{
-					System.out.println("invalid choice");
-					break;
-				}
-			}//end of switch
+					case 7:
+					{
+						System.out.println("Enter the product id");
+						int id=sc.nextInt();
+						sc.nextLine();
+						Product product=service.getProductById(id);
+						if(product!=null)
+							System.out.println(product);
+						else
+							System.out.println("Product not found");
+						break;
+					}
+					case 8:
+					{
+						int result=updateProduct(service,sc);
+						if(result>0)
+							System.out.println("product details updated successfully");
+						else
+							System.out.println("product not found");
+						break;
+					}
+					default:
+					{
+						System.out.println("invalid choice");
+						break;
+					}
+				}//end of switch
+			} catch (IllegalArgumentException e) {
+			    System.out.println("Validation Error: " + e.getMessage());
+			}//end of try catchBlock
+			
 			System.out.println("Enter Y for YES or N for no");
 			str=sc.nextLine();
 		}

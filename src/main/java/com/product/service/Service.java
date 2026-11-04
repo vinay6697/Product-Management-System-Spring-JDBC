@@ -23,28 +23,29 @@ public class Service {
 		int result=0;
 		
 		if(product==null)
-			 System.out.println("Product cannot be null");
+			throw new IllegalArgumentException("Product cannot be null");
 		else if (product.getProductName() == null || product.getProductName().isBlank() 
 				|| product.getProductName().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid product name");
+			throw new IllegalArgumentException("Please enter a valid product name");
 		}
 		
 		else if (product.getCategory() == null || product.getCategory().isBlank() 
 				|| product.getCategory().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid category name");
+			throw new IllegalArgumentException("Please enter a valid category name");
 		}
 		
 		else if(product.getPrice()==null)
-			System.out.println("Price must be greater than zero");
+			throw new IllegalArgumentException("Price must be greater than zero");
+		
 		else if(product.getPrice().compareTo(BigDecimal.ZERO)<=0)
-			System.out.println("price cannot be less the 0");
+			throw new IllegalArgumentException("price cannot be less the 0");
 		
 		else if(product.getQuantity()<=0)
-			System.out.println("Quantity must be greater than zero");
+			throw new IllegalArgumentException("Quantity must be greater than zero");
 		
 		else if (product.getDescription()== null || product.getDescription().isBlank() 
 				|| product.getDescription().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid description name");
+			throw new IllegalArgumentException("Please enter a valid description name");
 		}
 		
 		else
@@ -56,33 +57,27 @@ public class Service {
 	public int deleteProduct(int id)
 	{
 		if(id<=0)
-		{
-			System.out.println("Product ID must be greater than zero");
-			return 0;
-		}
-		else
+			throw new IllegalArgumentException("Product ID must be greater than zero");
+		
 			return dao.deleteProduct(id);
 	}
 	
 	public List<Product> searchProductByCategory(String category)
 	{
-		List<Product> products=new ArrayList<>();
-		
 		if (category == null || category.isBlank()
 		        || category.equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid category");
+			throw  new IllegalArgumentException("Please enter a valid category");
 		}
-		else
-		products= dao.searchProductByICategory(category);
 		
-		return products;
+		return dao.searchProductByICategory(category);
+		
 	}
 	
 	public int addStock(int id,int quantity)
 	{
 		int result=0;
 		if(id<=0 || quantity<=0)
-			System.out.println("Product ID and quantity must be greater than zero");
+			throw  new IllegalArgumentException("Product ID and quantity must be greater than zero");
 		else
 			result=dao.addStock(id,quantity);
 		return result;
@@ -92,7 +87,7 @@ public class Service {
 	{
 		int result=0;
 		if(id<=0 || quantity<=0)
-			System.out.println("Product ID and quantity must be greater than zero");
+			throw  new IllegalArgumentException("Product ID and quantity must be greater than zero");
 		else
 			result=dao.reduceStock(id,quantity);
 		return result;
@@ -102,7 +97,7 @@ public class Service {
 	{
 		List<Product> products=new ArrayList<>();
 		if(threshold<=0)
-			System.out.println("Threshold must be greater than zero");
+			throw  new IllegalArgumentException("Threshold must be greater than zero");
 		else
 			products=dao.checkLowStock(threshold);
 		return products;
@@ -129,28 +124,28 @@ public class Service {
 		int result=0;
 		
 		if(product==null)
-			System.out.println("product cannot be null");
+			throw  new IllegalArgumentException("product cannot be null");
 		else if(product.getProductId()<=0)
-			System.out.println("Product id cannot be 0 or negative");
+			throw  new IllegalArgumentException("Product id cannot be 0 or negative");
 		
 		else if(product.getProductName() == null || product.getProductName().isBlank() ||
 				product.getProductName().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid product name");
+			throw  new IllegalArgumentException("Please enter a valid product name");
 		}
 		
 		else if(product.getCategory()== null || product.getCategory().isBlank() || 
 				product.getCategory().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid category name");
+			throw  new IllegalArgumentException("Please enter a valid category name");
 		}
 		    
 		else if(product.getPrice()==null)
-			System.out.println("Price must be greater than zero");
+			throw  new IllegalArgumentException("Price must be greater than zero");
 		else if(product.getPrice().compareTo(BigDecimal.ZERO)<=0)
-			System.out.println("price cannot be less the 0");
+			throw  new IllegalArgumentException("price cannot be less the 0");
 		
 		else if (product.getDescription()== null || product.getDescription().isBlank() 
 				|| product.getDescription().equalsIgnoreCase("null")) {
-		    System.out.println("Please enter a valid descritpion name");
+				throw  new IllegalArgumentException("Please enter a valid descritpion name");
 		}
 		
 		else
