@@ -1,298 +1,180 @@
-# \# Product Management System
+PRODUCT MANAGEMENT SYSTEM
+=========================
 
-# 
+A console-based Product Management System developed using Java, Spring Core,
+Spring JDBC and PostgreSQL. This application allows users to manage product
+information and inventory through CRUD operations and stock management features.
 
-# A console-based Product Management System developed using \*\*Java, Spring Core, Spring JDBC and PostgreSQL\*\*. This application allows users to manage product information and inventory through CRUD operations and stock management features.
 
-# 
+TECHNOLOGIES USED
+=================
 
-# 🚀 Technologies Used
+- Java 21
+- Spring Framework 6.2.8
+- Spring Core
+- Spring JDBC
+- PostgreSQL
+- JdbcTemplate
+- Maven
+- Eclipse IDE
 
-# 
 
-# \- Java 21
+FEATURES
+========
 
-# \- Spring Framework 6.2.8
+The application provides the following functionalities:
 
-# \- Spring Core
+1. Add Product
+   Add new products with name, category, price, quantity and description.
 
-# \- Spring JDBC
+2. Delete Product
+   Delete a product using its product ID.
 
-# \- PostgreSQL
+3. Search Product by Category
+   Retrieve products belonging to a specific category.
 
-# \- JDBC Template
+4. Manage Product Stock
+   Add stock or reduce available stock.
 
-# \- Maven
+5. Check Low Stock
+   Identify products whose stock is below a specified threshold.
 
-# \- Eclipse IDE
+6. View All Products
+   Display all available products.
 
-# 
+7. Find Product by ID
+   Retrieve individual product details using its product ID.
 
-# 📌 Features
+8. Update Product Details
+   Modify existing product information.
 
-# 
 
-# The application provides the following functionalities:
+PROJECT ARCHITECTURE
+====================
 
-# 
+The application follows a layered architecture.
 
-# 1\. Add Product – Add new products with name, category, price, quantity and description.
+Main
+ |
+ v
+Service Layer
+ |
+ v
+DAO Layer
+ |
+ v
+Spring JDBC (JdbcTemplate)
+ |
+ v
+PostgreSQL Database
 
-# 2\. Delete Product – Delete a product using its product ID.
 
-# 3\. Search Product by Category – Retrieve products belonging to a specific category.
+PACKAGE STRUCTURE
+=================
 
-# 4\. Manage Product Stock – Add stock or reduce available stock.
+com.product
+    |
+    |--- config
+    |       |--- MyConfig.java
+    |
+    |--- entity
+    |       |--- Product.java
+    |
+    |--- dao
+    |       |--- ProductDAO.java
+    |
+    |--- service
+    |       |--- ServiceDAO.java
+    |
+    |--- main
+    |       |--- Main.java
+    |
+    |--- resources
+            |--- database.properties
 
-# 5\. Check Low Stock – Identify products whose stock is below a specified threshold.
 
-# 6\. View All Products – Display all available products.
+DATABASE CONFIGURATION
+======================
 
-# 7\. Find Product by ID – Retrieve individual product details using its ID.
+1. Install PostgreSQL.
 
-# 8\. Update Product Details – Modify existing product information.
+2. Create a database for the application.
 
-# 
+3. Create the products table.
 
-# 🏗️ Project Architecture
+SQL TABLE STRUCTURE:
 
-# 
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-# The application follows a layered architecture:
+4. Configure your database credentials in database.properties.
 
-# 
+EXAMPLE CONFIGURATION:
 
-# 
+db.url=jdbc:postgresql://localhost:5432/your_database
+db.username=your_username
+db.password=your_password
 
-# Main
+NOTE:
+Replace the placeholder values with your PostgreSQL credentials.
+Do not commit your actual database credentials to GitHub.
 
-# &#x20; |
 
-# &#x20; v
+EXCEPTION HANDLING AND VALIDATION
+=================================
 
-# Service Layer
+- Handles invalid numeric input using NumberFormatException.
+- Validates product details in the Service layer using IllegalArgumentException.
+- Handles database access errors using Spring's DataAccessException.
+- Prevents invalid stock operations through business validation.
+- Prevents negative stock quantities at the database level.
 
-# &#x20; |
 
-# &#x20; v
+HOW TO RUN THE PROJECT
+======================
 
-# DAO Layer
+1. Clone the repository:
 
-# &#x20; |
+   git clone https://github.com/YOUR_USERNAME/Product-Management-System-Spring-JDBC.git
 
-# &#x20; v
+2. Import the project into Eclipse as an existing Maven project.
 
-# Spring JDBC (JdbcTemplate)
+3. Configure PostgreSQL database credentials in database.properties.
 
-# &#x20; |
+4. Ensure PostgreSQL is running and the required table is created.
 
-# &#x20; v
+5. Update Maven dependencies if required.
 
-# PostgreSQL Database
+6. Run Main.java to start the application.
 
-# 
 
-# 
+CONCEPTS PRACTICED
+==================
 
-# Package Structure
+- Spring IoC Container
+- Dependency Injection
+- Annotation-Based Configuration
+- @Configuration and @ComponentScan
+- @Component and @Autowired
+- @Bean and @Value
+- Spring JDBC
+- JdbcTemplate
+- DAO and Service Layer Architecture
+- PreparedStatement-based database operations
+- Exception Handling
+- Input Validation
+- PostgreSQL Integration
 
-# 
 
-# com.product
+AUTHOR
+======
 
-# │
-
-# ├── config
-
-# │   └── MyConfig.java
-
-# │
-
-# ├── entity
-
-# │   └── Product.java
-
-# │
-
-# ├── dao
-
-# │   └── ProductDAO.java
-
-# │
-
-# ├── service
-
-# │   └── ServiceDAO.java
-
-# │
-
-# ├── main
-
-# │   └── Main.java
-
-# │
-
-# └── resources
-
-# &#x20;   └── database.properties
-
-# 
-
-# 
-
-# 🗄️ Database Configuration
-
-# 
-
-# 1\. Install PostgreSQL.
-
-# 2\. Create a database for the application.
-
-# 3\. Create the `products` table.
-
-# 
-
-# Example table structure:
-
-# 
-
-# sql
-
-# CREATE TABLE products (
-
-# &#x20;   product\_id SERIAL PRIMARY KEY,
-
-# &#x20;   product\_name VARCHAR(100) NOT NULL,
-
-# &#x20;   category VARCHAR(100) NOT NULL,
-
-# &#x20;   price NUMERIC(10,2) NOT NULL,
-
-# &#x20;   quantity INTEGER NOT NULL CHECK (quantity >= 0),
-
-# &#x20;   description TEXT,
-
-# &#x20;   created\_at TIMESTAMP DEFAULT CURRENT\_TIMESTAMP
-
-# );
-
-# 
-
-# 
-
-# 4\. Configure your database credentials in `database.properties`.
-
-# 
-
-# Example configuration:
-
-# 
-
-# properties
-
-# db.url=jdbc:postgresql://localhost:5432/your\_database
-
-# db.username=your\_username
-
-# db.password=your\_password
-
-# ```
-
-# 
-
-# Note: Replace the placeholder values with your PostgreSQL credentials. Do not commit your actual database credentials to GitHub.
-
-# 
-
-# ⚙️ Exception Handling and Validation
-
-# 
-
-# \- Handles invalid numeric input using `NumberFormatException`.
-
-# \- Validates product details in the Service layer using `IllegalArgumentException`.
-
-# \- Handles database access errors using Spring's `DataAccessException`.
-
-# \- Prevents invalid stock operations through business validation.
-
-# \- Prevents negative stock quantities at the database level.
-
-# 
-
-# ▶️ How to Run the Project
-
-# 
-
-# 1\. Clone the repository:
-
-# 
-
-# bash
-
-# git clone https://github.com/YOUR\_USERNAME/Product-Management-System-Spring-JDBC.git
-
-# 
-
-# 
-
-# 2\. Import the project into Eclipse as an existing Maven project.
-
-# 
-
-# 3\. Configure PostgreSQL database credentials in `database.properties`.
-
-# 
-
-# 4\. Ensure PostgreSQL is running and the required table is created.
-
-# 
-
-# 5\. Update Maven dependencies if required.
-
-# 
-
-# 6\. Run `Main.java` to start the application.
-
-# 
-
-# 📚 Concepts Practiced
-
-# 
-
-# \- Spring IoC Container
-
-# \- Dependency Injection
-
-# \- Annotation-Based Configuration
-
-# \- `@Configuration` and `@ComponentScan`
-
-# \- `@Component` and `@Autowired`
-
-# \- `@Bean` and `@Value`
-
-# \- Spring JDBC
-
-# \- JdbcTemplate
-
-# \- DAO and Service Layer Architecture
-
-# \- PreparedStatement-based database operations
-
-# \- Exception Handling
-
-# \- Input Validation
-
-# \- PostgreSQL Integration
-
-# 
-
-# 👨‍💻 Author
-
-# 
-
-# Developed as a hands-on Java backend learning project to gain practical experience with Spring Core, Spring JDBC and PostgreSQL.
-
-
-
+Developed as a hands-on Java backend learning project to gain practical
+experience with Spring Core, Spring JDBC and PostgreSQL.
