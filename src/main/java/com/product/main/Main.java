@@ -9,12 +9,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.product.config.MyConfig;
 import com.product.dao.ProductDAO;
 import com.product.entity.Product;
+import com.product.service.Service;
 
 public class Main {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(MyConfig.class);
 		ProductDAO dao = context.getBean("productDAO", ProductDAO.class);
-		
+		Service service=context.getBean("service",Service.class);
 		Scanner sc=new Scanner(System.in);
 		String str="";
 		
@@ -54,7 +55,7 @@ public class Main {
 					
 					Product product=new Product(name,category,price,quantity,description);
 					
-					int result=dao.addProduct(product);
+					int result=service.addProduct(product);
 					if(result>0)
 						System.out.println("Product inserted successfully");
 					else
@@ -67,7 +68,7 @@ public class Main {
 					System.out.println("Enter the id");
 					int id=sc.nextInt();
 					sc.nextLine();
-					int result=dao.deleteProduct(id);
+					int result=service.deleteProduct(id);
 					if(result>0)
 						System.out.println("Product deleted successfully");
 					else
@@ -79,7 +80,7 @@ public class Main {
 				{
 					System.out.println("Enter the category");
 					String category=sc.nextLine();
-					List<Product> categories=dao.searchProductByICategory(category);
+					List<Product> categories=service.searchProductByCategory(category);
 					if(categories!=null)
 					{
 						for(Product product:categories)
@@ -94,7 +95,7 @@ public class Main {
 				}
 				case 4:
 				{
-					int result=manageStock(dao,sc);
+					int result=manageStock(service,sc);
 					if(result>0)
 						System.out.println("product stock update succesfully");
 					else
@@ -108,7 +109,7 @@ public class Main {
 					System.out.println("Enter the Threshold");
 					int threshold=sc.nextInt();
 					sc.nextLine();
-					List<Product> products=dao.checkLowStock(threshold);
+					List<Product> products=service.checkLowStock(threshold);
 					if(products!=null)
 					{
 						for(Product product:products) {
@@ -123,7 +124,7 @@ public class Main {
 				}
 				case 6:
 				{
-					List<Product> products=dao.getAllProduct();
+					List<Product> products=service.getAllProduct();
 					if(products!=null)
 					{
 						for(Product product:products) {
@@ -141,13 +142,13 @@ public class Main {
 					System.out.println("Enter the product id");
 					int id=sc.nextInt();
 					sc.nextLine();
-					Product product=dao.getProductById(id);
+					Product product=service.getProductById(id);
 					System.out.println(product);
 					break;
 				}
 				case 8:
 				{
-					int result=updateProduct(dao,sc);
+					int result=updateProduct(service,sc);
 					if(result>0)
 						System.out.println("product details updated successfully");
 					else
@@ -170,7 +171,7 @@ public class Main {
 		System.out.println("application closed succesfully");
 	}
 	
-	public static int manageStock(ProductDAO dao,Scanner sc)
+	public static int manageStock(Service service,Scanner sc)
 	{
 		System.out.println("Enter the product id");
 		int id=sc.nextInt();
@@ -185,14 +186,14 @@ public class Main {
 				System.out.println("Enter the quantity");
 				int quantity=sc.nextInt();
 				
-				result=dao.addStock(id, quantity);
+				result=service.addStock(id, quantity);
 				break;
 			}
 			case 2:
 			{
 				System.out.println("Enter the quantity");
 				int quantity=sc.nextInt();
-				result=dao.reduceStock(id, quantity);
+				result=service.reduceStock(id, quantity);
 				break;
 			}
 			default :
@@ -204,7 +205,7 @@ public class Main {
 		return result;
 	}
 	
-	public static int updateProduct(ProductDAO dao,Scanner sc)
+	public static int updateProduct(Service service,Scanner sc)
 	{
 		System.out.println("Enter the product id");
 		int id=sc.nextInt();
@@ -230,7 +231,7 @@ public class Main {
 		product.setPrice(price);
 		product.setDescription(description);
 		
-		int result=dao.updateProduct(product);
+		int result=service.updateProduct(product);
 		return result;
 	}
 }
