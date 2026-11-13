@@ -175,6 +175,4 @@ CONCEPTS PRACTICED
 
 AUTHOR
 ======
-
-Developed as a hands-on Java backend learning project to gain practical
-experience with Spring Core, Spring JDBC and PostgreSQL.
+Vinay Kumar R
